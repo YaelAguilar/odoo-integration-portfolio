@@ -100,17 +100,17 @@ export function Clients() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Clientes Sincronizados</h1>
-          <p className="text-gray-600 mt-1">Gestión de clientes entre Odoo y SQL Server</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Clientes Sincronizados</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Gestión de clientes entre Odoo y SQL Server</p>
         </div>
-        <div className="flex gap-3">
-          <Button variant="outline" className="gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          <Button variant="outline" className="gap-2 w-full sm:w-auto">
             <Filter className="size-4" />
             Filtros
           </Button>
-          <Button className="gap-2">
+          <Button className="gap-2 w-full sm:w-auto">
             <Download className="size-4" />
             Exportar
           </Button>
@@ -167,7 +167,8 @@ export function Clients() {
           <CardTitle>Lista de Clientes</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border">
+          {/* Desktop Table */}
+          <div className="hidden lg:block rounded-md border overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -220,6 +221,57 @@ export function Clients() {
                 ))}
               </TableBody>
             </Table>
+          </div>
+          
+          {/* Mobile Cards */}
+          <div className="lg:hidden space-y-4">
+            {clients.map((client) => (
+              <div key={client.id} className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-gray-900 truncate">{client.name}</div>
+                    <div className="text-sm text-gray-500">{client.rfc}</div>
+                    <div className="text-xs text-gray-400 mt-1">ID: {client.id}</div>
+                  </div>
+                  {client.status === "synced" && (
+                    <Badge className="bg-green-100 text-green-700 hover:bg-green-100 gap-1 flex-shrink-0">
+                      <CheckCircle className="size-3" />
+                      Sincronizado
+                    </Badge>
+                  )}
+                  {client.status === "pending" && (
+                    <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-100 gap-1 flex-shrink-0">
+                      <Clock className="size-3" />
+                      Pendiente
+                    </Badge>
+                  )}
+                  {client.status === "error" && (
+                    <Badge className="bg-red-100 text-red-700 hover:bg-red-100 gap-1 flex-shrink-0">
+                      <XCircle className="size-3" />
+                      Error
+                    </Badge>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <div className="text-gray-500">Odoo ID</div>
+                    <div className="font-mono text-gray-900">{client.odooId}</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-500">SQL ID</div>
+                    <div className="font-mono text-gray-900">{client.sqlId || <span className="text-gray-400">—</span>}</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-500">Última Sync</div>
+                    <div className="text-gray-900">{client.lastSync}</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-500">Registros</div>
+                    <div className="text-gray-900 font-semibold">{client.records}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>

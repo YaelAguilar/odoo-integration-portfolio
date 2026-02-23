@@ -33,16 +33,16 @@ export function SyncMonitor() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Monitor de Sincronización</h1>
-          <p className="text-gray-600 mt-1">Sincronización en tiempo real Odoo ↔ SQL Server</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Monitor de Sincronización</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Sincronización en tiempo real Odoo ↔ SQL Server</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <Button 
             variant={isRunning ? "outline" : "default"}
             onClick={() => setIsRunning(!isRunning)}
-            className="gap-2"
+            className="gap-2 w-full sm:w-auto"
           >
             {isRunning ? (
               <>
@@ -56,7 +56,7 @@ export function SyncMonitor() {
               </>
             )}
           </Button>
-          <Button className="gap-2">
+          <Button className="gap-2 w-full sm:w-auto">
             <RefreshCw className="size-4" />
             Forzar Sync Manual
           </Button>
